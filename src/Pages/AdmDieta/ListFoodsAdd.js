@@ -1,19 +1,21 @@
 import React, {useState,useEffect, useContext} from 'react'
 import { FlatList, View } from 'react-native';
-import { GetFoodsAll } from '../../services/requests';
+import { GetFoodsIdUsers } from '../../services/requests';
 import Foods from './foods';
 import { UpdateContext } from '../Context';
 import styles from './styles';
+import { objectUser} from '../Context/objectUser'
 
 export default function ListFoodsAdd() {
     
     const {updateKey} = useContext(UpdateContext)
     const [foods, setFoods] = useState([]);
     const [page, setPage] = useState(1);
+    const { objUser } = useContext(objectUser);
 
     useEffect(() => {
         async function fetchData() {
-            const result = await GetFoodsAll();
+            const result = await GetFoodsIdUsers(objUser.id);
             setFoods(result);
         }
         fetchData();

@@ -1,7 +1,5 @@
 package com.example.dietControl.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 
@@ -13,7 +11,10 @@ public class Foods {
 
     @Id
     private int id;
-
     private String nome,qnt_proteina,valor;
+
+    @ManyToOne
+    @JoinColumn(name = "id_users")
+    private Users id_users;
 
 }

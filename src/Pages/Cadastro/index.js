@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./styles";
-import { View, TextInput,Image,TouchableOpacity } from "react-native";
+import { View, TextInput,Image,TouchableOpacity,Text } from "react-native";
 import ButtonCustom from "../../Components/ButtonCustom/Button";
 import {Ionicons} from '@expo/vector-icons'
 import { addUser } from "../../services/requests";
@@ -11,9 +11,28 @@ export default function Cadastro(){
     const [login,setLogin] = useState("");
     const [password,setPassword] = useState("");
     const [passwordConfirme,setPasswordConfirme] = useState("");
+    const [error,setError] = useState("")
 
+    const validate = () => {
+        if(password != passwordConfirme && password || passwordConfirme === "" || login === ""){
+            setError("As senhas não conferem!.")
+            setTimeout(()=>{
+                setError("")
+            },2000)
+            return false
+        }
+        else{
+            
+            setError("Cadastro realizado com sucesso!.")
+            setTimeout(()=>{
+                setError("")
+            },2000)
+            loginUsers()
+            return true
+        }}     
+    
 
-    function loginUsers(){
+    const loginUsers = () => {
 
         const data = {
             login,
@@ -21,6 +40,7 @@ export default function Cadastro(){
         }
         
         addUser(data)
+        
     }
 
     return(
@@ -59,10 +79,11 @@ export default function Cadastro(){
                 secureTextEntry={hideVisible}
                 value={passwordConfirme}
                 />
+                {error ? <Text style={{color: 'red',fontSize: 20}}>{error}</Text> : null}
                 <View style={styles.button}>
                     <ButtonCustom
                     text={"Cadastrar"}
-                    press={loginUsers}
+                    press={validate}
                     />
                 </View>
                 <View style={styles.buttonBack}>

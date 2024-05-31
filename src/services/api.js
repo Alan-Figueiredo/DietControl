@@ -1,6 +1,6 @@
 async function apiControl(method, data, endpoint) {
-    const Ngrokurl = process.env.API_URL3;
-    
+    const Ngrokurl = process.env.API_URL2;
+
     const url = Ngrokurl + endpoint;
     
     if (method === "GET") {

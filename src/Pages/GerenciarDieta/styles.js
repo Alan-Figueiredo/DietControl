@@ -47,6 +47,15 @@ const styles = StyleSheet.create({
         position:"absolute",
         bottom:15,
         alignSelf:'center',
+    },
+    dropdownStyle :{
+        backgroundColor:"#3EC1C6",
+        width:"90%",
+        alignSelf:"center",
+        top:"8%",
+        color: "white",
+        borderRadius:10,
+        padding:10,
     }
 
 })

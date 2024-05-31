@@ -1,26 +1,40 @@
 import {React,useState,useContext} from "react";
 import styles from "./styles";
-import { View, TextInput,Image  } from "react-native";
+import { View, TextInput,Image,Text  } from "react-native";
 import ButtonCustom from "../../Components/ButtonCustom/Button";
 import {AddFoods} from "../../services/requests";
 import { UpdateContext } from "../Context/index";
+import { objectUser} from '../Context/objectUser'
 
 export default function AddEditAlimentos(){
 
     const { setUpdateKey } = useContext(UpdateContext);
+    const { objUser } = useContext(objectUser);
     const [nome, setNameAlimento] = useState("");
     const [qntProteina, setQntProteina] = useState("");
     const [valor, setValor] = useState("");
-    
-    function logview(){
+    const [error,setError] = useState("");
 
-        const data = {
-            nome,
-            qntProteina,
-            valor
+    function logview(){
+        if(nome === "" || qntProteina === "") {
+            setError("Voce não pode deixar os campos * em branco.")
+            setTimeout(()=>{
+                setError("")
+            },2000)
+            return false
+            
+        } else {
+            const data = {
+                nome,
+                qntProteina,
+                valor,
+                objUser
+            }
+            AddFoods(data)
+            setUpdateKey(prevKey => prevKey + 1);
+            return true
         }
-        AddFoods(data)
-        setUpdateKey(prevKey => prevKey + 1);
+        
     }
 
     return(
@@ -34,14 +48,14 @@ export default function AddEditAlimentos(){
                 onChangeText={setNameAlimento}
                 value={nome}
                 style={styles.input}
-                placeholder="Nome do alimento"
+                placeholder="Nome do alimento *"
                 />
                 <TextInput
                 onChangeText={setQntProteina}
                 value={qntProteina}
                 keyboardType="numeric"
                 style={styles.input}
-                placeholder="Quantidade de proteina"
+                placeholder="Quantidade de proteina *"
                 />
                 <TextInput
                 onChangeText={setValor}
@@ -50,6 +64,7 @@ export default function AddEditAlimentos(){
                 style={styles.input}
                 placeholder="valor"
                 />
+                {error ? <Text style={{color: 'red',fontSize: 20}}>{error}</Text> : null}
                 <View style={styles.button}>
                     <ButtonCustom
                     press={logview}

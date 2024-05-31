@@ -2,7 +2,6 @@ package com.example.dietControl.controller;
 import com.example.dietControl.model.Foods;
 import com.example.dietControl.repository.FoodsRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -21,13 +20,15 @@ public class FoodsController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Foods> findById (@PathVariable int id){
-        return foodsRepository.findById(id)
-                .map(result -> ResponseEntity.ok().body(result))
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id_users}")
+    public ResponseEntity<List<Foods>> findByUserId (@PathVariable int id_users){
+        List<Foods> result = foodsRepository.findByUserId(id_users);
+        if(result.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(result);
+        }
     }
-
 
     @PostMapping
     public Foods create (@RequestBody Foods food){

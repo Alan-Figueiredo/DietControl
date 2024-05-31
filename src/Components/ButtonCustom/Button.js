@@ -9,7 +9,8 @@ export default function ButtonCustom({text, style,press, setText}){
     const navigation = useNavigation();
     const [isDialog,setIsDialog] = useState(false);
 
-    function pressButton(){
+    async function pressButton(){
+        
         if (text === "Voltar" ){
             navigation.goBack();
         }
@@ -17,11 +18,21 @@ export default function ButtonCustom({text, style,press, setText}){
             setIsDialog(true);
         }
         if (text === "Acessar") {
-            navigation.navigate("TelaInicial")
+            if (text === "Acessar") {
+                const loginSuccessful = await press();
+                if (loginSuccessful) {
+                    setTimeout(() => {
+                        navigation.navigate("TelaInicial")
+                    }, 1500); 
+                } 
+            }
         }
         if (text === "Cadastrar") {
-            press();
-            navigation.goBack();
+            if(press() === true) {
+                setTimeout(() => {
+                    navigation.navigate("TelaLogin")
+                }, 1000); 
+            }
         }
         if (text === "Criar") {
             navigation.navigate('AdmDieta')
@@ -33,8 +44,12 @@ export default function ButtonCustom({text, style,press, setText}){
             navigation.navigate("GerenciarDieta")
         }
         if (text === "Salvar" && press ) {
-            press();
-            navigation.goBack();
+            if(press() === true) {
+                setTimeout(() => {
+                    navigation.goBack();
+                }, 500); 
+            }
+            
         }
         else if (text === "Salvar" ){
             navigation.navigate("TelaInicial");
